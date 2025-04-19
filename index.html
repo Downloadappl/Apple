@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر آيفون - هواتف آبل</title>
+    <!-- خط Cairo من Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* إعدادات عامة */
+        :root {
+            --background: #0f172a;
+            --background-secondary: #1e293b;
+            --foreground: #f8fafc;
+            --foreground-secondary: #94a3b8;
+            --border: #334155;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --red: #ef4444;
+            --green: #22c55e;
+            --yellow: #eab308;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(to bottom, var(--background), #0f1729);
+            color: var(--foreground);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* الهيدر */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            width: 100%;
+            border-bottom: 1px solid var(--border);
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 4rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: transform 0.2s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--foreground-secondary);
+            transform: translateY(-2px);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+            background-color: var(--background-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            color: var(--foreground);
+            width: 200px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 0.75rem;
+            color: var(--foreground-secondary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+            transition: transform 0.2s ease;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .instagram {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .facebook {
+            background-color: #1877f2;
+        }
+
+        .telegram {
+            background-color: #0088cc;
+        }
+
+        .discord {
+            background-color: #5865f2;
+        }
+
+        .cart-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+            transition: transform 0.2s ease;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -0.25rem;
+            right: -0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 9999px;
+            background-color: var(--red);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .mobile-menu-button {
+            display: none;
+        }
+
+        /* الأزرار */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: white;
+            color: black;
+        }
+
+        .btn-primary:hover {
+            background-color: #e5e7eb;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-lg {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            border-radius: 9999px;
+        }
+
+        /* الصفحة الرئيسية */
+        .home-page {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .product-page, .compare-page {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .hero-section {
+            position: relative;
+            border-radius: 1.5rem;
+            background: linear-gradient(to bottom right, #1e293b, #0f172a, #000);
+            padding: 2.5rem;
+            margin-top: 2rem;
+            overflow: hidden;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: url('/placeholder.svg');
+            opacity: 0.1;
+            mix-blend-mode: overlay;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(to right, white, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: slideRight 0.7s ease-out;
+        }
+
+        .hero-description {
+            color: #cbd5e1;
+            font-size: 1.25rem;
+            max-width: 32rem;
+            animation: slideRight 0.7s ease-out 0.1s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            animation: slideRight 0.7s ease-out 0.2s both;
+        }
+
+        .hero-image {
+            position: relative;
+            height: 500px;
+            animation: fadeIn 0.7s ease-out 0.3s both;
+        }
+
+        .hero-image img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15));
+        }
+
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, #f8fafc, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .view-all {
+            display: flex;
+            align-items: center;
+            color: var(--foreground-secondary);
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .view-all:hover {
+            color: var(--foreground);
+        }
+
+        .view-all svg {
+            margin-right: 0.5rem;
+        }
+
+        .featured-products {
+            margin-top: 4rem;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .all-products {
+            margin-top: 4rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            position: relative;
+            height: 500px;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: linear-gradient(to bottom right, #1e293b, #0f172a);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #475569;
+        }
+
+        .product-image {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transform: scale(0.9);
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(0.95);
+        }
+
+        .product-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .star {
+            color: #9ca3af;
+        }
+
+        .star.filled {
+            color: var(--yellow);
+        }
+
+        .rating-text {
+            color: var(--foreground-secondary);
+            font-size: 0.875rem;
+            margin-right: 0.25rem;
+        }
+
+        .product-description {
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-new {
+            background-color: var(--green);
+            color: white;
+        }
+
+        .badge-discount {
+            background-color: var(--red);
+            color: white;
+        }
+
+        .regular-product-card {
+            height: 400px;
+        }
+
+        .regular-product-name {
+            font-size: 1.25rem;
+        }
+
+        .regular-product-price {
+            font-size: 1.125rem;
+        }
+
+        .regular-product-rating .star {
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+
+        /* صفحة المنتج */
+        .product-detail {
+            margin-top: 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            color: var(--foreground-secondary);
+            margin-bottom: 2rem;
+            transition: color 0.2s ease;
+        }
+
+        .back-button:hover {
+            color: var(--foreground);
+        }
+
+        .back-button svg {
+            margin-left: 0.5rem;
+        }
+
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .product-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .main-image {
+            position: relative;
+            height: 600px;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: linear-gradient(to bottom right, #1e293b, #0f172a);
+            border: 1px solid var(--border);
+        }
+
+        .main-image img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 1rem;
+        }
+
+        .gallery-navigation {
+            position: absolute;
+            inset: 0 0 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+            pointer-events: none;
+        }
+
+        .gallery-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: background-color 0.2s ease;
+        }
+
+        .gallery-button:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .thumbnails {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .thumbnail {
+            position: relative;
+            width: 5rem;
+            height: 5rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: border-color 0.2s ease;
+        }
+
+        .thumbnail.active {
+            border-color: white;
+        }
+
+        .thumbnail:hover:not(.active) {
+            border-color: #475569;
+        }
+
+        .thumbnail img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .product-title-section {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, white, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .product-rating-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .product-badges-detail {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .product-description-detail {
+            color: #cbd5e1;
+            font-size: 1.125rem;
+            line-height: 1.75;
+        }
+
+        .product-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .option-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .color-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .color-circle {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            border: 2px solid #475569;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .color-circle:hover {
+            border-color: white;
+        }
+
+        .color-name {
+            font-size: 0.875rem;
+            color: var(--foreground-secondary);
+        }
+
+        .storage-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .storage-option {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid #475569;
+            color: var(--foreground-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .storage-option:hover {
+            border-color: white;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .region-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .region-option {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #475569;
+            background-color: rgba(30, 41, 59, 0.5);
+            transition: background-color 0.2s ease;
+        }
+
+        .region-option:hover {
+            background-color: #1e293b;
+        }
+
+        .region-name {
+            color: var(--foreground-secondary);
+        }
+
+        .region-price {
+            font-weight: 700;
+            color: white;
+        }
+
+        .coupon-section {
+            padding-top: 1rem;
+        }
+
+        .coupon-alert {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: linear-gradient(to right, rgba(185, 28, 28, 0.5), rgba(153, 27, 27, 0.3));
+            border: 1px solid rgba(220, 38, 38, 0.5);
+            color: #fecaca;
+        }
+
+        .add-to-cart {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            color: black;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .add-to-cart:hover {
+            background-color: #e5e7eb;
+            transform: translateY(-2px);
+        }
+
+        .add-to-cart svg {
+            margin-left: 0.5rem;
+        }
+
+        .product-tabs {
+            margin-top: 2.5rem;
+        }
+
+        .tabs-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.25rem;
+            background: linear-gradient(to right, #1e293b, #0f172a);
+            border-radius: 0.75rem;
+            padding: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .tab {
+            padding: 0.75rem;
+            text-align: center;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .tab.active {
+            background-color: #334155;
+        }
+
+        .tab:hover:not(.active) {
+            background-color: rgba(51, 65, 85, 0.5);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            background: linear-gradient(to bottom right, #1e293b, #0f172a);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .specs-list, .features-list, .shipping-list {
+            display: grid;
+            gap: 0.75rem;
+            color: #cbd5e1;
+        }
+
+        .spec-item, .feature-item, .shipping-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .spec-item:last-child, .feature-item:last-child, .shipping-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 9999px;
+            background-color: #334155;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+        }
+
+        .check-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 9999px;
+            background-color: #334155;
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+        }
+
+        /* صفحة المقارنة */
+        .compare-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .compare-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, white, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .compare-description {
+            color: var(--foreground-secondary);
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+
+        .compare-container {
+            background-color: rgba(30, 41, 59, 0.5);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+
+        .phone-selectors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .phone-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .select-phone {
+            width: 200px;
+            padding: 0.5rem;
+            background-color: #334155;
+            border: 1px solid #475569;
+            border-radius: 0.375rem;
+            color: white;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .remove-phone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 9999px;
+            background-color: transparent;
+            color: var(--foreground-secondary);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .remove-phone:hover {
+            background-color: #334155;
+            color: white;
+        }
+
+        .add-phone-button {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: 1px dashed #475569;
+            background-color: transparent;
+            color: var(--foreground-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .add-phone-button:hover {
+            border-color: #94a3b8;
+            color: white;
+        }
+
+        .compare-table-container {
+            overflow-x: auto;
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .compare-table th, .compare-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .compare-table th:first-child, .compare-table td:first-child {
+            text-align: right;
+            color: var(--foreground-secondary);
+            font-weight: 500;
+        }
+
+        .compare-table th {
+            min-width: 250px;
+        }
+
+        .compare-table th:first-child {
+            min-width: auto;
+        }
+
+        .phone-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .phone-image {
+            position: relative;
+            height: 10rem;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .phone-image img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .phone-name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .phone-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            margin-top: 0.25rem;
+        }
+
+        .view-details {
+            margin-top: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
+            background-color: var(--primary);
+            color: white;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .view-details:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .check-icon-green {
+            color: var(--green);
+            margin: 0 auto;
+        }
+
+        .x-icon-red {
+            color: var(--red);
+            margin: 0 auto;
+        }
+
+        .compare-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .buy-button {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            background-color: white;
+            color: black;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .buy-button:hover {
+            background-color: #e5e7eb;
+            transform: translateY(-2px);
+        }
+
+        .buy-button svg {
+            margin-left: 0.5rem;
+        }
+
+        /* تأثيرات حركية */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideRight {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* تصميم متجاوب */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-image {
+                height: 400px;
+                order: -1;
+            }
+
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .mobile-menu-button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 2.5rem;
+                height: 2.5rem;
+                background-color: transparent;
+                border: none;
+                color: white;
+                cursor: pointer;
+            }
+
+            .search-box {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- الهيدر -->
+    <header>
+        <div class="container header-container">
+            <div class="flex items-center gap-4">
+                <button class="" id="mobileMenuButton">
+                    
+                    </svg>
+                </button>
+
+                <a href="#" class="logo" onclick="showPage('home')">آبل</a>
+
+                <nav>
+                    <a href="#" onclick="showPage('home')">الرئيسية</a>
+                    <a href="#" onclick="showPage('products')">المنتجات</a>
+                    <a href="#" onclick="showPage('compare')">المقارنة</a>
+                    <a href="#">الدعم</a>
+                </nav>
+            </div>
+
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="ابحث عن منتج...">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/sx5xq/profilecard/?igsh=MThteTM1Ym1pb25wZg==" target="_blank" class="social-icon instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="https://www.facebook.com/share/1CNG98TcEe/" target="_blank" class="social-icon facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://t.me/sx5xq" target="_blank" class="social-icon telegram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.5 2L2.5 11L9.5 13L11.5 22L21.5 2Z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://discord.com" target="_blank" class="social-icon discord">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </a>
+                </div>
+
+                <a href="#" class="cart-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-badge">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- الصفحة الرئيسية -->
+        <div class="home-page" id="homePage">
+            <!-- قسم الترويج الرئيسي -->
+            <section class="hero-section">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="hero-title">أحدث هواتف آيفون</h1>
+                        <p class="hero-description">اكتشف مجموعتنا الشاملة من أحدث هواتف آيفون بمختلف الموديلات والألوان وخيارات التخزين</p>
+                        <div class="hero-buttons">
+                            <button class="btn btn-primary btn-lg">تسوق الآن</button>
+                            <button class="btn btn-outline btn-lg" onclick="showPage('compare')">مقارنة الموديلات</button>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <img src="https://ar-hosting.pages.dev/1745066075613.jpg" alt="آيفون 16 برو ماكس">
+                    </div>
+                </div>
+            </section>
+
+            <!-- قسم المنتجات المميزة -->
+            <section class="featured-products">
+                <div class="section-header">
+                    <h2 class="section-title">أحدث الإصدارات</h2>
+                    <a href="#" class="view-all" onclick="showPage('products')">
+                        عرض الكل
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="featured-grid">
+                    <!-- آيفون 16 برو ماكس -->
+                    <div class="product-card" onclick="showProductDetail('iphone-16-pro-max')">
+                        <div class="product-image">
+                            <img src="https://ar-hosting.pages.dev/1745066075613.jpg" alt="آيفون 16 برو ماكس">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-header">
+                                <h3 class="product-name">آيفون 16 برو ماكس</h3>
+                                <p class="product-price">$1,499</p>
+                            </div>
+                            <div class="product-rating">
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="rating-text">5.0</span>
+                            </div>
+                            <p class="product-description">آيفون 16 برو ماكس مع شاشة أكبر وزر التحكم بالكاميرا ومعالج A18 Pro</p>
+                            <div class="product-badges">
+                                <span class="badge badge-new">جديد</span>
+                                <span class="badge badge-discount">خصم 5% للطلب المسبق</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- آيفون 15 برو ماكس -->
+                    <div class="product-card" onclick="showProductDetail('iphone-15-pro-max')">
+                        <div class="product-image">
+                            <img src="https://ar-hosting.pages.dev/1745066077152.jpg" alt="آيفون 15 برو ماكس">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-header">
+                                <h3 class="product-name">آيفون 15 برو ماكس</h3>
+                                <p class="product-price">$1,399</p>
+                            </div>
+                            <div class="product-rating">
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star">★</span>
+                                <span class="rating-text">4.9</span>
+                            </div>
+                            <p class="product-description">آيفون 15 برو ماكس مع هيكل من التيتانيوم وزر الإجراء ومعالج A17 Pro</p>
+                            <div class="product-badges">
+                                <span class="badge badge-discount">خصم 10%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- قسم جميع المنتجات -->
+            <section class="all-products">
+                <h2 class="section-title">جميع الموديلات</h2>
+
+                <div class="products-grid">
+                    <!-- آيفون 14 برو ماكس -->
+                    <div class="product-card regular-product-card" onclick="showProductDetail('iphone-14-pro-max')">
+                        <div class="product-image">
+                            <img src="https://ar-hosting.pages.dev/1745066073941.jpg" alt="آيفون 14 برو ماكس">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-header">
+                                <h3 class="product-name regular-product-name">آيفون 14 برو ماكس</h3>
+                                <p class="product-price regular-product-price">$1,299</p>
+                            </div>
+                            <div class="product-rating regular-product-rating">
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star">★</span>
+                                <span class="rating-text">4.9</span>
+                            </div>
+                            <p class="product-description">آيفون 14 برو ماكس مع شاشة دائمة التشغيل والجزيرة الديناميكية ومعالج A16 Bionic</p>
+                        </div>
+                    </div>
+
+                    <!-- آيفون 13 برو ماكس -->
+                    <div class="product-card regular-product-card" onclick="showProductDetail('iphone-13-pro-max')">
+                        <div class="product-image">
+                            <img src="https://ar-hosting.pages.dev/1745066076352.jpg" alt="آيفون 13 برو ماكس">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-header">
+                                <h3 class="product-name regular-product-name">آيفون 13 برو ماكس</h3>
+                                <p class="product-price regular-product-price">$1,199</p>
+                            </div>
+                            <div class="product-rating regular-product-rating">
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star">★</span>
+                                <span class="rating-text">4.8</span>
+                            </div>
+                            <p class="product-description">آيفون 13 برو ماكس مع شاشة سوبر ريتينا XDR مع ProMotion ومعالج A15 Bionic</p>
+                        </div>
+                    </div>
+
+                    <!-- آيفون 12 برو ماكس -->
+                    <div class="product-card regular-product-card" onclick="showProductDetail('iphone-12-pro-max')">
+                        <div class="product-image">
+                            <img src="https://ar-hosting.pages.dev/1745066074808.jpg" alt="آيفون 12 برو ماكس">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-header">
+                                <h3 class="product-name regular-product-name">آيفون 12 برو ماكس</h3>
+                                <p class="product-price regular-product-price">$1,099</p>
+                            </div>
+                            <div class="product-rating regular-product-rating">
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star">★</span>
+                                <span class="rating-text">4.8</span>
+                            </div>
+                            <p class="product-description">آيفون 12 برو ماكس مع شاشة سوبر ريتينا XDR مقاس 6.7 بوصة ونظام كاميرا احترافية</p>
+                        </div>
+                    </div>
+
+                    <!-- آيفون 11 برو ماكس -->
+                    <div class="product-card regular-product-card" onclick="showProductDetail('iphone-11-pro-max')">
+                        <div class="product-image">
+                            <img src="https://ar-hosting.pages.dev/1745066081169.jpg" alt="آيفون 11 برو ماكس">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-header">
+                                <h3 class="product-name regular-product-name">آيفون 11 برو ماكس</h3>
+                                <p class="product-price regular-product-price">$999</p>
+                            </div>
+                            <div class="product-rating regular-product-rating">
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star filled">★</span>
+                                <span class="star">★</span>
+                                <span class="rating-text">4.7</span>
+                            </div>
+                            <p class="product-description">آيفون 11 برو ماكس مع شاشة سوبر ريتينا XDR مقاس 6.5 بوصة ونظام كاميرا ثلاثية احترافية</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- صفحة المنتج -->
+        <div class="product-page" id="productPage">
+            <div class="product-detail" id="productDetail">
+                <!-- سيتم ملؤها ديناميكيًا بواسطة JavaScript -->
+            </div>
+        </div>
+
+        <!-- صفحة المقارنة -->
+        <div class="compare-page" id="comparePage">
+            <div class="compare-header">
+                <h1 class="compare-title">مقارنة هواتف آيفون</h1>
+                <p class="compare-description">قارن بين مواصفات وميزات هواتف آيفون المختلفة لاختيار الهاتف المناسب لاحتياجاتك</p>
+            </div>
+
+            <div class="compare-container">
+                <div class="phone-selectors">
+                    <div class="phone-selector">
+                        <select class="select-phone" id="phone1">
+                            <option value="iphone-16-pro-max">آيفون 16 برو ماكس</option>
+                            <option value="iphone-15-pro-max">آيفون 15 برو ماكس</option>
+                            <option value="iphone-14-pro-max">آيفون 14 برو ماكس</option>
+                            <option value="iphone-13-pro-max">آيفون 13 برو ماكس</option>
+                            <option value="iphone-12-pro-max">آيفون 12 برو ماكس</option>
+                            <option value="iphone-11-pro-max">آيفون 11 برو ماكس</option>
+                        </select>
+                    </div>
+                    <div class="phone-selector">
+                        <select class="select-phone" id="phone2">
+                            <option value="iphone-16-pro-max">آيفون 16 برو ماكس</option>
+                            <option value="iphone-15-pro-max" selected>آيفون 15 برو ماكس</option>
+                            <option value="iphone-14-pro-max">آيفون 14 برو ماكس</option>
+                            <option value="iphone-13-pro-max">آيفون 13 برو ماكس</option>
+                            <option value="iphone-12-pro-max">آيفون 12 برو ماكس</option>
+                            <option value="iphone-11-pro-max">آيفون 11 برو ماكس</option>
+                        </select>
+                    </div>
+                    <div class="phone-selector" id="phone3Selector" style="display: none;">
+                        <select class="select-phone" id="phone3">
+                            <option value="iphone-16-pro-max">آيفون 16 برو ماكس</option>
+                            <option value="iphone-15-pro-max">آيفون 15 برو ماكس</option>
+                            <option value="iphone-14-pro-max" selected>آيفون 14 برو ماكس</option>
+                            <option value="iphone-13-pro-max">آيفون 13 برو ماكس</option>
+                            <option value="iphone-12-pro-max">آيفون 12 برو ماكس</option>
+                            <option value="iphone-11-pro-max">آيفون 11 برو ماكس</option>
+                        </select>
+                        <button class="remove-phone" onclick="removePhone()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="add-phone-button" id="addPhoneButton" onclick="addPhone()">
+                        إضافة هاتف للمقارنة
+                    </button>
+                </div>
+
+                <div class="compare-table-container">
+                    <table class="compare-table" id="compareTable">
+                        <!-- سيتم ملؤها ديناميكيًا بواسطة JavaScript -->
+                    </table>
+                </div>
+
+                <div class="compare-actions" id="compareActions">
+                    <!-- سيتم ملؤها ديناميكيًا بواسطة JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // بيانات الهواتف
+        const iphones = [
+            {
+                id: "iphone-11-pro-max",
+                name: "آيفون 11 برو ماكس",
+                image: "https://ar-hosting.pages.dev/1745066081169.jpg",
+                price: "$999",
+                gallery: [
+                    "https://ar-hosting.pages.dev/1745066081169.jpg",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                ],
+                colors: [
+                    { name: "أسود", hex: "#1F2937" },
+                    { name: "فضي", hex: "#E5E7EB" },
+                    { name: "ذهبي", hex: "#FBBF24" },
+                    { name: "أخضر ليلي", hex: "#064E3B" },
+                ],
+                storage: ["64GB", "256GB", "512GB"],
+                regions: [
+                    { name: "الشرق الأوسط", price: "$999" },
+                    { name: "الولايات المتحدة", price: "$949" },
+                    { name: "اليابان", price: "$979" },
+                    { name: "الصين", price: "$989" },
+                ],
+                description: "آيفون 11 برو ماكس هو أقوى وأكبر هاتف آيفون في عام 2019. يتميز بشاشة سوبر ريتينا XDR مقاس 6.5 بوصة ونظام كاميرا ثلاثية احترافية ومعالج A13 Bionic.",
+                specs: [
+                    "شاشة سوبر ريتينا XDR مقاس 6.5 بوصة بدقة 2688 × 1242 بكسل بكثافة 458 بكسل في البوصة",
+                    "معالج A13 Bionic مع Neural Engine",
+                    "نظام كاميرا ثلاثية 12 ميجابكسل (واسعة، فائقة الاتساع، مقربة)",
+                    "كاميرا أمامية TrueDepth بدقة 12 ميجابكسل",
+                    "مقاوم للماء والغبار بمعيار IP68 (عمق 4 أمتار لمدة تصل إلى 30 دقيقة)",
+                    "بطارية تدوم طوال اليوم (حتى 20 ساعة من تشغيل الفيديو)",
+                    "نظام تشغيل iOS 13 (قابل للترقية)",
+                    "Face ID للمصادقة الآمنة",
+                    "الأبعاد: 158.0 × 77.8 × 8.1 ملم",
+                    "الوزن: 226 جرام",
+                ],
+                features: [
+                    "وضع الليل للتصوير في الإضاءة المنخفضة",
+                    "وضع Portrait مع إضاءة Portrait المتقدمة",
+                    "تسجيل فيديو 4K بمعدل 60 إطارًا في الثانية",
+                    "تسجيل فيديو بطيء الحركة بدقة 1080p بمعدل 240 إطارًا في الثانية",
+                    "شحن لاسلكي",
+                    "شحن سريع (حتى 50٪ في 30 دقيقة مع محول 18 واط)",
+                    "Wi-Fi 6 (802.11ax) مع MIMO 2×2",
+                    "بلوتوث 5.0",
+                ],
+                coupons: [],
+                rating: 4.7,
+                processor: "A13 Bionic",
+                camera: "ثلاثية 12 ميجابكسل",
+                display: "6.5 بوصة Super Retina XDR",
+                battery: "حتى 20 ساعة فيديو",
+                waterResistant: "IP68 (4 متر)",
+                faceId: true,
+                magsafe: false,
+                actionButton: false,
+                dynamicIsland: false,
+                alwaysOnDisplay: false,
+                usbC: false,
+            },
+            {
+                id: "iphone-12-pro-max",
+                name: "آيفون 12 برو ماكس",
+                image: "https://ar-hosting.pages.dev/1745066074808.jpg",
+                price: "$1,099",
+                gallery: [
+                    "https://ar-hosting.pages.dev/1745066074808.jpg",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                ],
+                colors: [
+                    { name: "أزرق هادئ", hex: "#1E3A8A" },
+                    { name: "ذهبي", hex: "#FBBF24" },
+                    { name: "جرافيت", hex: "#4B5563" },
+                    { name: "فضي", hex: "#E5E7EB" },
+                ],
+                storage: ["128GB", "256GB", "512GB"],
+                regions: [
+                    { name: "الشرق الأوسط", price: "$1,099" },
+                    { name: "الولايات المتحدة", price: "$1,049" },
+                    { name: "اليابان", price: "$1,079" },
+                    { name: "الصين", price: "$1,089" },
+                ],
+                description: "آيفون 12 برو ماكس هو أكبر وأقوى هاتف آيفون في عام 2020. يتميز بشاشة سوبر ريتينا XDR مقاس 6.7 بوصة ونظام كاميرا احترافية ومعالج A14 Bionic ودعم 5G.",
+                specs: [
+                    "شاشة سوبر ريتينا XDR مقاس 6.7 بوصة بدقة 2778 × 1284 بكسل بكثافة 458 بكسل في البوصة",
+                    "معالج A14 Bionic مع Neural Engine الجيل الجديد",
+                    "نظام كاميرا احترافية ثلاثية 12 ميجابكسل (واسعة، فائقة الاتساع، مقربة) مع ماسح LiDAR",
+                    "كاميرا أمامية TrueDepth بدقة 12 ميجابكسل",
+                    "مقاوم للماء والغبار بمعيار IP68 (عمق 6 أمتار لمدة تصل إلى 30 دقيقة)",
+                    "بطارية تدوم طوال اليوم (حتى 20 ساعة من تشغيل الفيديو)",
+                    "نظام تشغيل iOS 14 (قابل للترقية)",
+                    "Face ID للمصادقة الآمنة",
+                    "الأبعاد: 160.8 × 78.1 × 7.4 ملم",
+                    "الوزن: 228 جرام",
+                ],
+                features: [
+                    "دعم شبكات 5G",
+                    "سيراميك شيلد مع مقاومة للسقوط أفضل 4 مرات",
+                    "وضع الليل على جميع الكاميرات",
+                    "Apple ProRAW للتصوير الاحترافي",
+                    "تسجيل وتحرير فيديو HDR بتقنية Dolby Vision بدقة 4K بمعدل 60 إطارًا في الثانية",
+                    "ماسح LiDAR للتطبيقات المتطورة للواقع المعزز",
+                    "MagSafe للملحقات والشحن اللاسلكي الأسرع",
+                ],
+                coupons: [],
+                rating: 4.8,
+                processor: "A14 Bionic",
+                camera: "ثلاثية 12 ميجابكسل مع LiDAR",
+                display: "6.7 بوصة Super Retina XDR",
+                battery: "حتى 20 ساعة فيديو",
+                waterResistant: "IP68 (6 متر)",
+                faceId: true,
+                magsafe: true,
+                actionButton: false,
+                dynamicIsland: false,
+                alwaysOnDisplay: false,
+                usbC: false,
+            },
+            {
+                id: "iphone-13-pro-max",
+                name: "آيفون 13 برو ماكس",
+                image: "https://ar-hosting.pages.dev/1745066076352.jpg",
+                price: "$1,199",
+                gallery: [
+                    "https://ar-hosting.pages.dev/1745066076352.jpg",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                ],
+                colors: [
+                    { name: "أزرق سيرا", hex: "#0C4A6E" },
+                    { name: "فضي", hex: "#E5E7EB" },
+                    { name: "ذهبي", hex: "#FBBF24" },
+                    { name: "جرافيت", hex: "#4B5563" },
+                ],
+                storage: ["128GB", "256GB", "512GB", "1TB"],
+                regions: [
+                    { name: "الشرق الأوسط", price: "$1,199" },
+                    { name: "الولايات المتحدة", price: "$1,149" },
+                    { name: "اليابان", price: "$1,179" },
+                    { name: "الصين", price: "$1,189" },
+                ],
+                description: "آيفون 13 برو ماكس هو أكبر وأقوى هاتف آيفون في عام 2021. يتميز بشاشة سوبر ريتينا XDR مع ProMotion ومعدل تحديث 120 هرتز ومعالج A15 Bionic.",
+                specs: [
+                    "شاشة سوبر ريتينا XDR مع ProMotion مقاس 6.7 بوصة بدقة 2778 × 1284 بكسل بكثافة 458 بكسل في البوصة ومعدل تحديث حتى 120 هرتز",
+                    "معالج A15 Bionic مع وحدة معالجة مركزية سداسية النواة ووحدة معالجة رسومات خماسية النواة",
+                    "نظام كاميرا احترافية ثلاثية محسّنة 12 ميجابكسل (واسعة، فائقة الاتساع، مقربة) مع ماسح LiDAR",
+                    "كاميرا أمامية TrueDepth بدقة 12 ميجابكسل",
+                    "مقاوم للماء والغبار بمعيار IP68 (عمق 6 أمتار لمدة تصل إلى 30 دقيقة)",
+                    "بطارية تدوم طوال اليوم (حتى 28 ساعة من تشغيل الفيديو)",
+                    "نظام تشغيل iOS 15 (قابل للترقية)",
+                    "Face ID للمصادقة الآمنة",
+                    "الأبعاد: 160.8 × 78.1 × 7.65 ملم",
+                    "الوزن: 240 جرام",
+                ],
+                features: [
+                    "شاشة ProMotion بمعدل تحديث يصل إلى 120 هرتز",
+                    "وضع سينمائي لتسجيل فيديو بعمق ميداني ضحل وتحولات تركيز تلقائية",
+                    "أنماط التصوير الفوتوغرافي",
+                    "تكبير بصري 3x على الكاميرا المقربة",
+                    "وضع ماكرو للتصوير القريب",
+                    "Apple ProRAW للتصوير الاحترافي",
+                    "تسجيل وتحرير فيديو HDR بتقنية Dolby Vision",
+                ],
+                coupons: [{ code: "IPHONE13", discount: "خصم $50" }],
+                rating: 4.8,
+                processor: "A15 Bionic",
+                camera: "ثلاثية 12 ميجابكسل محسنة",
+                display: "6.7 بوصة Super Retina XDR مع ProMotion",
+                battery: "حتى 28 ساعة فيديو",
+                waterResistant: "IP68 (6 متر)",
+                faceId: true,
+                magsafe: true,
+                actionButton: false,
+                dynamicIsland: false,
+                alwaysOnDisplay: false,
+                usbC: false,
+            },
+            {
+                id: "iphone-14-pro-max",
+                name: "آيفون 14 برو ماكس",
+                image: "https://ar-hosting.pages.dev/1745066073941.jpg",
+                price: "$1,299",
+                gallery: [
+                    "https://ar-hosting.pages.dev/1745066073941.jpg",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                ],
+                colors: [
+                    { name: "أرجواني غامق", hex: "#581C87" },
+                    { name: "ذهبي", hex: "#FBBF24" },
+                    { name: "فضي", hex: "#E5E7EB" },
+                    { name: "أسود", hex: "#1F2937" },
+                ],
+                storage: ["128GB", "256GB", "512GB", "1TB"],
+                regions: [
+                    { name: "الشرق الأوسط", price: "$1,299" },
+                    { name: "الولايات المتحدة", price: "$1,249" },
+                    { name: "اليابان", price: "$1,279" },
+                    { name: "الصين", price: "$1,289" },
+                ],
+                description: "آيفون 14 برو ماكس هو أكبر وأقوى هاتف آيفون في عام 2022. يتميز بشاشة دائمة التشغيل والجزيرة الديناميكية ومعالج A16 Bionic.",
+                specs: [
+                    "شاشة سوبر ريتينا XDR دائمة التشغيل مع ProMotion مقاس 6.7 بوصة بدقة 2796 × 1290 بكسل بكثافة 460 بكسل في البوصة ومعدل تحديث حتى 120 هرتز",
+                    "معالج A16 Bionic مع وحدة معالجة مركزية سداسية النواة ووحدة معالجة رسومات خماسية النواة",
+                    "نظام كاميرا احترافية ثلاثية محسّنة (واسعة 48 ميجابكسل، فائقة الاتساع 12 ميجابكسل، مقربة 12 ميجابكسل) مع ماسح LiDAR",
+                    "كاميرا أمامية TrueDepth بدقة 12 ميجابكسل مع تركيز تلقائي",
+                    "مقاوم للماء والغبار بمعيار IP68 (عمق 6 أمتار لمدة تصل إلى 30 دقيقة)",
+                    "بطارية تدوم طوال اليوم (حتى 29 ساعة من تشغيل الفيديو)",
+                    "نظام تشغيل iOS 16 (قابل للترقية)",
+                    "Face ID للمصادقة الآمنة",
+                    "الأبعاد: 160.7 × 77.6 × 7.85 ملم",
+                    "الوزن: 240 جرام",
+                ],
+                features: [
+                    "الجزيرة الديناميكية - طريقة جديدة للتفاعل مع التنبيهات والأنشطة",
+                    "شاشة دائمة التشغيل تعرض الوقت والتنبيهات والمعلومات دائمًا",
+                    "كاميرا رئيسية بدقة 48 ميجابكسل مع بكسل بيننج متقدم",
+                    "وضع العمل للتصوير في الحركة",
+                    "اكتشاف الحوادث - يمكنه اكتشاف حوادث السيارات الخطيرة",
+                    "SOS الطوارئ عبر الأقمار الصناعية",
+                    "وضع سينمائي الآن بدقة 4K",
+                ],
+                coupons: [{ code: "IPHONE14", discount: "خصم $75" }],
+                rating: 4.9,
+                processor: "A16 Bionic",
+                camera: "رئيسية 48 ميجابكسل + ثلاثية",
+                display: "6.7 بوصة Super Retina XDR مع ProMotion",
+                battery: "حتى 29 ساعة فيديو",
+                waterResistant: "IP68 (6 متر)",
+                faceId: true,
+                magsafe: true,
+                actionButton: false,
+                dynamicIsland: true,
+                alwaysOnDisplay: true,
+                usbC: false,
+            },
+            {
+                id: "iphone-15-pro-max",
+                name: "آيفون 15 برو ماكس",
+                image: "https://ar-hosting.pages.dev/1745066077152.jpg",
+                price: "$1,399",
+                gallery: [
+                    "https://ar-hosting.pages.dev/1745066077152.jpg",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                ],
+                colors: [
+                    { name: "تيتانيوم طبيعي", hex: "#A1A1AA" },
+                    { name: "تيتانيوم أزرق", hex: "#1E3A8A" },
+                    { name: "تيتانيوم أبيض", hex: "#F9FAFB" },
+                    { name: "تيتانيوم أسود", hex: "#1F2937" },
+                ],
+                storage: ["256GB", "512GB", "1TB"],
+                regions: [
+                    { name: "الشرق الأوسط", price: "$1,399" },
+                    { name: "الولايات المتحدة", price: "$1,349" },
+                    { name: "اليابان", price: "$1,379" },
+                    { name: "الصين", price: "$1,389" },
+                ],
+                description: "آيفون 15 برو ماكس هو أكبر وأقوى هاتف آيفون في عام 2023. يتميز بهيكل من التيتانيوم وزر الإجراء ومعالج A17 Pro ومنفذ USB-C.",
+                specs: [
+                    "شاشة سوبر ريتينا XDR دائمة التشغيل مع ProMotion مقاس 6.7 بوصة بدقة 2796 × 1290 بكسل بكثافة 460 بكسل في البوصة ومعدل تحديث حتى 120 هرتز",
+                    "معالج A17 Pro مع وحدة معالجة مركزية سداسية النواة ووحدة معالجة رسومات سداسية النواة",
+                    "نظام كاميرا احترافية ثلاثية محسّنة (واسعة 48 ميجابكسل، فائقة الاتساع 12 ميجابكسل، مقربة 12 ميجابكسل مع تكبير بصري 5x) مع ماسح LiDAR",
+                    "كاميرا أمامية TrueDepth بدقة 12 ميجابكسل مع تركيز تلقائي",
+                    "مقاوم للماء والغبار بمعيار IP68 (عمق 6 أمتار لمدة تصل إلى 30 دقيقة)",
+                    "بطارية تدوم طوال اليوم (حتى 29 ساعة من تشغيل الفيديو)",
+                    "نظام تشغيل iOS 17 (قابل للترقية)",
+                    "Face ID للمصادقة الآمنة",
+                    "الأبعاد: 159.9 × 76.7 × 8.25 ملم",
+                    "الوزن: 221 جرام",
+                ],
+                features: [
+                    "هيكل من التيتانيوم - أخف وأقوى",
+                    "زر الإجراء - زر قابل للتخصيص يمكنه تنفيذ مهام مختلفة",
+                    "منفذ USB-C مع سرعات نقل USB 3",
+                    "كاميرا تقريب بصري 5x (تكافئ 120 ملم)",
+                    "عدسة تيتراباريسكوب للتكبير البصري المحسن",
+                    "وضع التصوير الفوتوغرافي المكاني لالتقاط صور ثلاثية الأبعاد",
+                    "معالج A17 Pro مع تسريع أجهزة ray tracing للألعاب",
+                ],
+                coupons: [{ code: "IPHONE15", discount: "خصم 10%" }],
+                rating: 4.9,
+                processor: "A17 Pro",
+                camera: "رئيسية 48 ميجابكسل + تقريب 5x",
+                display: "6.7 بوصة Super Retina XDR مع ProMotion",
+                battery: "حتى 29 ساعة فيديو",
+                waterResistant: "IP68 (6 متر)",
+                faceId: true,
+                magsafe: true,
+                actionButton: true,
+                dynamicIsland: true,
+                alwaysOnDisplay: true,
+                usbC: true,
+            },
+            {
+                id: "iphone-16-pro-max",
+                name: "آيفون 16 برو ماكس",
+                image: "https://ar-hosting.pages.dev/1745066075613.jpg",
+                price: "$1,499",
+                gallery: [
+                    "https://ar-hosting.pages.dev/1745066075613.jpg",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                    "/placeholder.svg?height=800&width=400",
+                ],
+                colors: [
+                    { name: "تيتانيوم طبيعي", hex: "#A1A1AA" },
+                    { name: "تيتانيوم أسود", hex: "#1F2937" },
+                    { name: "تيتانيوم أبيض", hex: "#F9FAFB" },
+                    { name: "تيتانيوم صحراوي", hex: "#D4A76A" },
+                ],
+                storage: ["256GB", "512GB", "1TB"],
+                regions: [
+                    { name: "الشرق الأوسط", price: "$1,499" },
+                    { name: "الولايات المتحدة", price: "$1,449" },
+                    { name: "اليابان", price: "$1,479" },
+                    { name: "الصين", price: "$1,489" },
+                ],
+                description: "آيفون 16 برو ماكس هو أكبر وأقوى هاتف آيفون في عام 2024. يتميز بشاشة أكبر مقاس 6.9 بوصة وزر التحكم بالكاميرا ومعالج A18 Pro وذاكرة وصول عشوائي 8GB.",
+                specs: [
+                    "شاشة سوبر ريتينا XDR دائمة التشغيل مع ProMotion مقاس 6.9 بوصة بدقة 2868 × 1320 بكسل بكثافة 460 بكسل في البوصة ومعدل تحديث حتى 120 هرتز",
+                    "معالج A18 Pro مع وحدة معالجة مركزية ثمانية النواة ووحدة معالجة رسومات سداسية النواة",
+                    "ذاكرة وصول عشوائي 8GB",
+                    "نظام كاميرا احترافية ثلاثية محسّنة (واسعة 48 ميجابكسل، فائقة الاتساع 48 ميجابكسل، مقربة 12 ميجابكسل مع تكبير بصري 5x) مع ماسح LiDAR",
+                    "كاميرا أمامية TrueDepth بدقة 12 ميجابكسل مع تركيز تلقائي",
+                    "مقاوم للماء والغبار بمعيار IP68 (عمق 6 أمتار لمدة تصل إلى 30 دقيقة)",
+                    "بطارية تدوم طوال اليوم (حتى 33 ساعة من تشغيل الفيديو)",
+                    "نظام تشغيل iOS 18 مع Apple Intelligence",
+                    "Face ID للمصادقة الآمنة",
+                    "الأبعاد: 163.0 × 77.6 × 8.25 ملم",
+                    "الوزن: 227 جرام",
+                ],
+                features: [
+                    "زر التحكم بالكاميرا - زر حساس للمس للتحكم في وظائف الكاميرا",
+                    "Apple Intelligence - ميزات الذكاء الاصطناعي المتقدمة على الجهاز وفي السحابة",
+                    "كاميرا فائقة الاتساع محسّنة بدقة 48 ميجابكسل",
+                    "تسجيل فيديو مكاني بدقة 4K بمعدل 60 إطارًا في الثانية لـ Apple Vision Pro",
+                    "وضع التصوير الفوتوغرافي المكاني المحسّن",
+                    "منفذ USB-C مع سرعات نقل USB 3 تصل إلى 10 جيجابت/ثانية",
+                    "Wi-Fi 7 للاتصال الأسرع",
+                ],
+                new: true,
+                coupons: [{ code: "PREORDER16", discount: "خصم 5% للطلب المسبق" }],
+                rating: 5.0,
+                processor: "A18 Pro",
+                camera: "رئيسية 48 ميجابكسل + فائقة الاتساع 48 ميجابكسل",
+                display: "6.9 بوصة Super Retina XDR مع ProMotion",
+                battery: "حتى 33 ساعة فيديو",
+                waterResistant: "IP68 (6 متر)",
+                faceId: true,
+                magsafe: true,
+                actionButton: true,
+                dynamicIsland: true,
+                alwaysOnDisplay: true,
+                usbC: true,
+            },
+        ];
+
+        // التنقل بين الصفحات
+        function showPage(page) {
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('productPage').style.display = 'none';
+            document.getElementById('comparePage').style.display = 'none';
+
+            switch (page) {
+                case 'home':
+                    document.getElementById('homePage').style.display = 'block';
+                    break;
+                case 'products':
+                    document.getElementById('homePage').style.display = 'block';
+                    document.querySelector('.all-products').scrollIntoView({ behavior: 'smooth' });
+                    break;
+                case 'product':
+                    document.getElementById('productPage').style.display = 'block';
+                    break;
+                case 'compare':
+                    document.getElementById('comparePage').style.display = 'block';
+                    updateCompareTable();
+                    break;
+            }
+        }
+
+        // عرض تفاصيل المنتج
+        function showProductDetail(productId) {
+            const product = iphones.find(phone => phone.id === productId);
+            if (!product) return;
+
+            const productDetailHtml = `
+                <a href="#" class="back-button" onclick="showPage('home')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    العودة للمتجر
+                </a>
+
+                <div class="product-detail-grid">
+                    <div class="product-gallery">
+                        <div class="main-image">
+                            <img src="${product.gallery[0]}" alt="${product.name}" id="mainProductImage">
+                            <div class="gallery-navigation">
+                                <div class="gallery-button" onclick="changeProductImage(-1)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="15 18 9 12 15 6"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="gallery-button" onclick="changeProductImage(1)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="thumbnails">
+                            ${product.gallery.map((img, index) => `
+                                <div class="thumbnail ${index === 0 ? 'active' : ''}" onclick="setProductImage(${index})">
+                                    <img src="${img}" alt="${product.name} - صورة ${index + 1}">
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="product-info-detail">
+                        <div>
+                            <div class="product-title-section">
+                                <h1 class="product-title">${product.name}</h1>
+                                <div class="product-actions">
+                                    <div class="social-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="social-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="18" cy="5" r="3"></circle>
+                                            <circle cx="6" cy="12" r="3"></circle>
+                                            <circle cx="18" cy="19" r="3"></circle>
+                                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-rating-detail">
+                                <div class="product-rating">
+                                    ${Array(5).fill().map((_, i) => `
+                                        <span class="star ${i < Math.floor(product.rating) ? 'filled' : ''}">★</span>
+                                    `).join('')}
+                                </div>
+                                <span class="rating-text">${product.rating} (124 تقييم)</span>
+                            </div>
+
+                            <div class="product-badges-detail">
+                                ${product.new ? '<span class="badge badge-new">جديد</span>' : ''}
+                                ${product.coupons && product.coupons.length > 0 ? '<span class="badge badge-discount">متوفر كوبون خصم</span>' : ''}
+                            </div>
+
+                            <p class="product-description-detail">${product.description}</p>
+                        </div>
+
+                        <div class="product-options">
+                            <div>
+                                <h3 class="option-title">الألوان المتاحة</h3>
+                                <div class="color-options">
+                                    ${product.colors.map(color => `
+                                        <div class="color-option">
+                                            <div class="color-circle" style="background-color: ${color.hex}"></div>
+                                            <span class="color-name">${color.name}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="option-title">خيارات التخزين</h3>
+                                <div class="storage-options">
+                                    ${product.storage.map(size => `
+                                        <div class="storage-option">${size}</div>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="option-title">الأسعار حسب المنطقة</h3>
+                                <div class="region-options">
+                                    ${product.regions.map(region => `
+                                        <div class="region-option">
+                                            <span class="region-name">${region.name}</span>
+                                            <span class="region-price">${region.price}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            ${product.coupons && product.coupons.length > 0 ? `
+                                <div class="coupon-section">
+                                    <h3 class="option-title">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline; margin-left: 0.5rem;">
+                                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                                        </svg>
+                                        كوبونات الخصم المتاحة
+                                    </h3>
+                                    <div class="coupon-alert">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        ${product.coupons.map(coupon => `
+                                            <span>${coupon.code} (${coupon.discount})</span>
+                                        `).join('، ')}
+                                    </div>
+                                </div>
+                            ` : ''}
+
+                            <button class="add-to-cart">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="9" cy="21" r="1"></circle>
+                                    <circle cx="20" cy="21" r="1"></circle>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                </svg>
+                                إضافة إلى السلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-tabs">
+                    <div class="tabs-list">
+                        <div class="tab active" onclick="switchTab('specs')">المواصفات</div>
+                        <div class="tab" onclick="switchTab('features')">المميزات</div>
+                        <div class="tab" onclick="switchTab('shipping')">الشحن والتوصيل</div>
+                    </div>
+
+                    <div class="tab-content active" id="specs-tab">
+                        <ul class="specs-list">
+                            ${product.specs.map((spec, index) => `
+                                <li class="spec-item">
+                                    <div class="item-number">${index + 1}</div>
+                                    <span>${spec}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" id="features-tab">
+                        <ul class="features-list">
+                            ${product.features.map((feature, index) => `
+                                <li class="feature-item">
+                                    <div class="check-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                    <span>${feature}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" id="shipping-tab">
+                        <ul class="shipping-list">
+                            <li class="shipping-item">
+                                <div class="check-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <span>شحن مجاني لجميع الطلبات</span>
+                            </li>
+                            <li class="shipping-item">
+                                <div class="check-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <span>توصيل سريع خلال 2-5 أيام عمل</span>
+                            </li>
+                            <li class="shipping-item">
+                                <div class="check-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <span>ضمان لمدة عام على جميع المنتجات</span>
+                            </li>
+                            <li class="shipping-item">
+                                <div class="check-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <span>إمكانية الاسترجاع خلال 14 يوم</span>
+                            </li>
+                            <li class="shipping-item">
+                                <div class="check-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <span>خدمة عملاء على مدار الساعة</span>
+                            </li>
+                            <li class="shipping-item">
+                                <div class="check-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <span>تغليف آمن وفاخر</span>
+                            </li>
+                            <li class="shipping-item">
+                                <div class="check-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <span>تتبع الشحنة لحظة بلحظة</span>
+                            </li>
+                            <li class="shipping-item">
+                                <div class="check-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <span>خيارات دفع متعددة ومرنة</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('productDetail').innerHTML = productDetailHtml;
+            showPage('product');
+            window.currentProductId = productId;
+            window.currentImageIndex = 0;
+        }
+
+        // تغيير صورة المنتج
+        function changeProductImage(direction) {
+            const product = iphones.find(phone => phone.id === window.currentProductId);
+            if (!product) return;
+
+            const totalImages = product.gallery.length;
+            window.currentImageIndex = (window.currentImageIndex + direction + totalImages) % totalImages;
+            
+            document.getElementById('mainProductImage').src = product.gallery[window.currentImageIndex];
+            
+            // تحديث الصور المصغرة
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach((thumb, index) => {
+                if (index === window.currentImageIndex) {
+                    thumb.classList.add('active');
+                } else {
+                    thumb.classList.remove('active');
+                }
+            });
+        }
+
+        // تعيين صورة المنتج
+        function setProductImage(index) {
+            const product = iphones.find(phone => phone.id === window.currentProductId);
+            if (!product) return;
+
+            window.currentImageIndex = index;
+            document.getElementById('mainProductImage').src = product.gallery[index];
+            
+            // تحديث الصور المصغرة
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach((thumb, i) => {
+                if (i === index) {
+                    thumb.classList.add('active');
+                } else {
+                    thumb.classList.remove('active');
+                }
+            });
+        }
+
+        // تبديل التبويبات
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`.tab:nth-child(${tabName === 'specs' ? 1 : tabName === 'features' ? 2 : 3})`).classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        // إضافة هاتف للمقارنة
+        function addPhone() {
+            const phone3Selector = document.getElementById('phone3Selector');
+            phone3Selector.style.display = 'flex';
+            document.getElementById('addPhoneButton').style.display = 'none';
+            updateCompareTable();
+        }
+
+        // إزالة هاتف من المقارنة
+        function removePhone() {
+            const phone3Selector = document.getElementById('phone3Selector');
+            phone3Selector.style.display = 'none';
+            document.getElementById('addPhoneButton').style.display = 'block';
+            updateCompareTable();
+        }
+
+        // تحديث جدول المقارنة
+        function updateCompareTable() {
+            const phone1Id = document.getElementById('phone1').value;
+            const phone2Id = document.getElementById('phone2').value;
+            const phone3Selector = document.getElementById('phone3Selector');
+            const phone3Id = phone3Selector.style.display !== 'none' ? document.getElementById('phone3').value : null;
+
+            const phone1 = iphones.find(phone => phone.id === phone1Id);
+            const phone2 = iphones.find(phone => phone.id === phone2Id);
+            const phone3 = phone3Id ? iphones.find(phone => phone.id === phone3Id) : null;
+
+            const selectedPhones = [phone1, phone2];
+            if (phone3) selectedPhones.push(phone3);
+
+            // إنشاء جدول المقارنة
+            let tableHtml = `
+                <tr>
+                    <th>المواصفات</th>
+                    ${selectedPhones.map(phone => `
+                        <th>
+                            <div class="phone-header">
+                                <div class="phone-image">
+                                    <img src="${phone.image}" alt="${phone.name}">
+                                </div>
+                                <h3 class="phone-name">${phone.name}</h3>
+                                <p class="phone-price">${phone.price}</p>
+                                <button class="view-details" onclick="showProductDetail('${phone.id}')">
+                                    عرض التفاصيل
+                                </button>
+                            </div>
+                        </th>
+                    `).join('')}
+                </tr>
+                <tr>
+                    <td>المعالج</td>
+                    ${selectedPhones.map(phone => `<td>${phone.processor}</td>`).join('')}
+                </tr>
+                <tr>
+                    <td>الكاميرا</td>
+                    ${selectedPhones.map(phone => `<td>${phone.camera}</td>`).join('')}
+                </tr>
+                <tr>
+                    <td>الشاشة</td>
+                    ${selectedPhones.map(phone => `<td>${phone.display}</td>`).join('')}
+                </tr>
+                <tr>
+                    <td>البطارية</td>
+                    ${selectedPhones.map(phone => `<td>${phone.battery}</td>`).join('')}
+                </tr>
+                <tr>
+                    <td>خيارات التخزين</td>
+                    ${selectedPhones.map(phone => `<td>${phone.storage.join(', ')}</td>`).join('')}
+                </tr>
+                <tr>
+                    <td>الألوان المتاحة</td>
+                    ${selectedPhones.map(phone => `<td>${phone.colors.map(c => c.name).join(', ')}</td>`).join('')}
+                </tr>
+                <tr>
+                    <td>مقاومة الماء</td>
+                    ${selectedPhones.map(phone => `<td>${phone.waterResistant}</td>`).join('')}
+                </tr>
+                <tr>
+                    <td>Face ID</td>
+                    ${selectedPhones.map(phone => `
+                        <td>
+                            ${phone.faceId ? `
+                                <svg class="check-icon-green" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            ` : `
+                                <svg class="x-icon-red" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            `}
+                        </td>
+                    `).join('')}
+                </tr>
+                <tr>
+                    <td>MagSafe</td>
+                    ${selectedPhones.map(phone => `
+                        <td>
+                            ${phone.magsafe ? `
+                                <svg class="check-icon-green" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            ` : `
+                                <svg class="x-icon-red" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            `}
+                        </td>
+                    `).join('')}
+                </tr>
+                <tr>
+                    <td>زر الإجراء</td>
+                    ${selectedPhones.map(phone => `
+                        <td>
+                            ${phone.actionButton ? `
+                                <svg class="check-icon-green" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            ` : `
+                                <svg class="x-icon-red" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            `}
+                        </td>
+                    `).join('')}
+                </tr>
+                <tr>
+                    <td>الجزيرة الديناميكية</td>
+                    ${selectedPhones.map(phone => `
+                        <td>
+                            ${phone.dynamicIsland ? `
+                                <svg class="check-icon-green" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            ` : `
+                                <svg class="x-icon-red" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            `}
+                        </td>
+                    `).join('')}
+                </tr>
+                <tr>
+                    <td>شاشة دائمة التشغيل</td>
+                    ${selectedPhones.map(phone => `
+                        <td>
+                            ${phone.alwaysOnDisplay ? `
+                                <svg class="check-icon-green" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            ` : `
+                                <svg class="x-icon-red" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            `}
+                        </td>
+                    `).join('')}
+                </tr>
+                <tr>
+                    <td>منفذ USB-C</td>
+                    ${selectedPhones.map(phone => `
+                        <td>
+                            ${phone.usbC ? `
+                                <svg class="check-icon-green" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            ` : `
+                                <svg class="x-icon-red" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            `}
+                        </td>
+                    `).join('')}
+                </tr>
+                <tr>
+                    <td>التقييم</td>
+                    ${selectedPhones.map(phone => `<td>${phone.rating} / 5</td>`).join('')}
+                </tr>
+            `;
+
+            document.getElementById('compareTable').innerHTML = tableHtml;
+
+            // إنشاء أزرار الشراء
+            let actionsHtml = '';
+            selectedPhones.forEach(phone => {
+                actionsHtml += `
+                    <button class="buy-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        شراء ${phone.name}
+                    </button>
+                `;
+            });
+
+            document.getElementById('compareActions').innerHTML = actionsHtml;
+
+            // تحديث حدث تغيير الهاتف
+            document.getElementById('phone1').addEventListener('change', updateCompareTable);
+            document.getElementById('phone2').addEventListener('change', updateCompareTable);
+            if (phone3Selector.style.display !== 'none') {
+                document.getElementById('phone3').addEventListener('change', updateCompareTable);
+            }
+        }
+
+        // عرض الصفحة الرئيسية عند تحميل الصفحة
+        window.onload = function() {
+            showPage('home');
+        };
+    </script>
+</body>
+</html>
